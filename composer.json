@@ -20,7 +20,8 @@
     ],
     "require": {
         "wp-cli/php-cli-tools": "^0.11.22",
-        "ext-pdo": "*"
+        "ext-pdo": "*",
+        "gabordemooij/redbean": "^5.6"
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest"

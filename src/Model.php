@@ -2,72 +2,85 @@
 
 namespace Alexzero00\GuessNumber;
 
+use RedBeanPHP\R;
+use RedBeanPHP\RedException\SQL;
+
 use function cli\line;
 use function cli\input;
 
 class Model
 {
-    private $database;
     private $player_name;
-    private $game_id;
-    private $generated_number;
+    private $game;
     private $max_number = 500;
     private $max_attempts = 15;
 
     public function __construct($player_name)
     {
-        $this->database = new Database();
+        R::setup('sqlite:' . __DIR__ . '/database.db');
         $this->player_name = $player_name;
-        $this->generated_number = 0;
-        $this->game_id = $this->database->saveGame([
-            'date' => date('Y-m-d H:i:s'),
-            'player_name' => $this->player_name,
-            'max_number' => $this->max_number,
-            'generated_number' => $this->generated_number,
-            'outcome' => 'in progress'
-        ]);
+        $this->game = R::dispense('games');
+        $this->game->date = date('Y-m-d H:i:s');
+        $this->game->player_name = $this->player_name;
+        $this->game->max_number = $this->max_number;
+        $this->game->generated_number = 0;
+        $this->game->outcome = 'in progress';
+        try {
+            R::store($this->game);
+        } catch (SQL $e) {
+        }
     }
 
     public function newGate($player_name)
     {
-        $this->database = new Database();
         $this->player_name = $player_name;
-        $this->generated_number = 0;
-        $this->game_id = $this->database->saveGame([
-            'date' => date('Y-m-d H:i:s'),
-            'player_name' => $this->player_name,
-            'max_number' => $this->max_number,
-            'generated_number' => $this->generated_number,
-            'outcome' => 'in progress'
-        ]);
+        $this->game = R::dispense('games');
+        $this->game->date = date('Y-m-d H:i:s');
+        $this->game->player_name = $this->player_name;
+        $this->game->max_number = $this->max_number;
+        $this->game->generated_number = 0;
+        $this->game->outcome = 'in progress';
+        try {
+            R::store($this->game);
+        } catch (SQL $e) {
+        }
     }
 
     public function generateNumber()
     {
-        $this->generated_number = mt_rand(1, $this->max_number);
+        $this->game->generated_number = mt_rand(1, $this->max_number);
     }
+
     public function setNumber()
     {
-        $this->database->setNumber($this->game_id, $this->generated_number);
+        try {
+            R::store($this->game);
+        } catch (SQL $e) {
+        }
     }
+
     public function getGeneratedNumber()
     {
-        return $this->generated_number;
+        return $this->game->generated_number;
     }
 
     public function saveAttempt($attempt_number, $proposed_number, $computer_response)
     {
-        $this->database->saveAttempt([
-            'game_id' => $this->game_id,
-            'attempt_number' => $attempt_number,
-            'proposed_number' => $proposed_number,
-            'computer_response' => $computer_response
-        ]);
+        $attempt = R::dispense('attempts');
+        $attempt->game_id = $this->game->id;
+        $attempt->attempt_number = $attempt_number;
+        $attempt->proposed_number = $proposed_number;
+        $attempt->computer_response = $computer_response;
+        R::store($attempt);
     }
 
     public function updateGameOutcome($outcome)
     {
-        $this->database->updateGameOutcome($this->game_id, $outcome);
+        $this->game->outcome = $outcome;
+        try {
+            R::store($this->game);
+        } catch (SQL $e) {
+        }
     }
 
     public function gameLoop()
@@ -111,7 +124,8 @@ class Model
     public function setMaxNumber($max_number)
     {
         $this->max_number = $max_number;
-        $this->database->setMaxNumber($this->game_id, $max_number);
+        $this->game->max_number = $max_number;
+        R::store($this->game);
     }
 
     public function setMaxAttempts($max_attempts)
@@ -121,6 +135,6 @@ class Model
 
     public function delete()
     {
-        $this->database->delete();
+        R::trash($this->game);
     }
 }

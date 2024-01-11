@@ -1,18 +1,18 @@
 <?php
 
-namespace Yukiowtnb\GuessNumber\Controller;
+namespace Alexzero00\GuessNumber\Controller;
 
 use Exception;
-use Yukiowtnb\GuessNumber\Model;
+use Alexzero00\GuessNumber\Model;
 
-use function Yukiowtnb\GuessNumber\View\displayGame;
-use function Yukiowtnb\GuessNumber\View\displayWelcomeMessage;
-use function Yukiowtnb\GuessNumber\View\getPlayerName;
-use function Yukiowtnb\GuessNumber\View\displayMenu;
-use function Yukiowtnb\GuessNumber\View\displayGames;
-use function Yukiowtnb\GuessNumber\View\displayWins;
-use function Yukiowtnb\GuessNumber\View\displayLosses;
-use function Yukiowtnb\GuessNumber\View\displayPlayerStats;
+use function Alexzero00\GuessNumber\View\displayGame;
+use function Alexzero00\GuessNumber\View\displayWelcomeMessage;
+use function Alexzero00\GuessNumber\View\getPlayerName;
+use function Alexzero00\GuessNumber\View\displayMenu;
+use function Alexzero00\GuessNumber\View\displayGames;
+use function Alexzero00\GuessNumber\View\displayWins;
+use function Alexzero00\GuessNumber\View\displayLosses;
+use function Alexzero00\GuessNumber\View\displayPlayerStats;
 use function cli\line;
 use function cli\input;
 
