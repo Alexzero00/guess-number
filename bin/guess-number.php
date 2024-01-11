@@ -7,6 +7,6 @@ if (file_exists($autoloadPath)) {
     require_once($autoloadPath);
 }
 
-use function Alexzero00\GuessNumber\Controller\startGame;
+use function Alexzero00\GuessNumber\Controller\initiateGame;
 
-startGame();
+initiateGame();

@@ -6,7 +6,8 @@
         },
         "files": [
             "src/Controller.php",
-            "src/View.php"
+            "src/View.php",
+            "src/Model.php"
         ]
     },
     "authors": [
@@ -18,7 +19,7 @@
     "require": {
         "wp-cli/php-cli-tools": "^0.11.22"
     }
-    ,
+,
     "require-dev": {
         "roave/security-advisories": "dev-latest"
     },
