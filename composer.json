@@ -1,5 +1,5 @@
 {
-    "name": "alexzero/guess-number",
+    "name": "Alexzero00/guess-number",
     "autoload": {
         "psr-4": {
             "Alex\\GuessNumber\\": "src/"
